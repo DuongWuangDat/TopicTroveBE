@@ -8,7 +8,11 @@ require("dotenv").config()
 const http = require("http").createServer(app)
 const userRoute = require("./route/user_route.js")
 const tokenRoute = require("./route/token_route.js")
-
+const communityRoute = require("./route/community_route.js")
+const postRoute = require("./route/post_route.js")
+const commentRoute = require("./route/comment_route.js")
+const notificationRoute = require("./route/notification_route.js")
+const uploadRoute = require("./route/upload_route.js")
 
 
 const port = process.env.PORT
@@ -42,3 +46,8 @@ app.get("/ping", (req,res)=>{
 
 app.use(`${api}/user`, userRoute)
 app.use(`${api}/token`, tokenRoute)
+app.use(`${api}/upload`, uploadRoute)
+app.use(`${api}/community`, communityRoute)
+app.use(`${api}/post`, postRoute)
+app.use(`${api}/comment`, commentRoute)
+app.use(`${api}/notification`, notificationRoute)

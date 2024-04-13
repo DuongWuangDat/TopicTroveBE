@@ -36,7 +36,7 @@ const register = async (req,res)=>{
     return res.json({
         accessToken: accessToken,
         refreshToken: refreshToken,
-        data: newUser
+        data: newUser.populate("communities")
     })
 
 }
@@ -158,7 +158,7 @@ const getUserByEmail = async (req,res) =>{
     })
     const existUser = await User.findOne({
         email: req.body.email
-    }).select('-password')
+    }).select('-password').populate("communities")
     if(!existUser) return res.status(404).json({
         message: "User is not found"
     })
@@ -168,7 +168,7 @@ const getUserByEmail = async (req,res) =>{
 }
 
 const getAllUser = async (req,res)=>{
-    const userList = await User.find().select('-password').catch((err)=>{
+    const userList = await User.find().select('-password').populate("communities").catch((err)=>{
         return res.status(400).json({
             message: "Something went wrong"
         })

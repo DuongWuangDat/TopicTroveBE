@@ -76,7 +76,25 @@ const UpdateComment = async(req,res)=>{
     })
 }
 
-module.exports={CreateComment,GetAllComment,GetCommentByPostID,GetCommentByUID,DeleteComment,UpdateComment}
+const CheckIsOwner = async(req,res)=>{
+    const curUserId = await tokenController.getUIDfromToken(req)
+    const id = await Comment.findById(id)
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const post = await Post.findById(comment.post)
+    if(curUserId!= post.author){
+        return res.status(401).json({
+            result: false
+        })
+    }
+    return res.json({
+        result: true
+    })
+}
+
+module.exports={CreateComment,GetAllComment,GetCommentByPostID,GetCommentByUID,DeleteComment,UpdateComment,CheckIsOwner}
 
 //methods
 const getCommentTree = async (postId) => {

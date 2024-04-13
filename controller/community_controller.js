@@ -56,7 +56,7 @@ const DeleteCommunity = async (req,res)=>{
 }
 
 const GetCommunityByOwnerId = async (req,res)=>{
-    const ownerId = req.params.id
+    const ownerId = req.body.ownerId
     const isValidId = await helper.isValidObjectID(ownerId)
     if(!isValidId) return res.status(400).json({
         message: "Invalid id"
@@ -103,4 +103,23 @@ const UpdateCommunity = async (req,res)=>{
     })
 }
 
-module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity}
+const CheckIsOwner = async (req,res)=>{
+    const ownerID = await tokenController.getUIDfromToken(req)
+    const id= req.params.id
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const community = await Community.findById(id)
+    if(!community) return res.status(404).json({
+        message: "Community not found"
+    })
+    if(ownerID != community.owner) return res.status(401).json({
+        result: false
+    })
+    return res.json({
+        result: true
+    })
+}
+
+module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner}

@@ -129,4 +129,26 @@ const UpdatePost = async (req,res)=>{
     })
 }
 
-module.exports = {CreatePost, GetAllPost,GetPostByCommunityId,GetPostByUID,GetPostByCommunityIdAndUID,DeletePost,UpdatePost}
+const CheckIsOwner = async(req,res)=>{
+    const curUserId = await tokenController.getUIDfromToken
+    const id = req.params.id
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const post = await Post.findById(id)
+    if(!post){
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+    if(curUserId != post.author){
+        return res.status(401).json({
+            result: false
+        })
+    }
+    return res.status(401).json({
+        result: true
+    })
+}
+module.exports = {CreatePost, GetAllPost,GetPostByCommunityId,GetPostByUID,GetPostByCommunityIdAndUID,DeletePost,UpdatePost,CheckIsOwner}
