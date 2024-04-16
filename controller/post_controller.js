@@ -2,7 +2,6 @@ const Post = require("../model/post.js")
 const User = require("../model/user.js")
 const Community = require("../model/community.js")
 const tokenController = require("../controller/token_controller.js")
-const auth = require()
 const CreatePost = async (req,res)=>{
     const post = new Post(req.body)
     await post.save().catch((e)=>{
@@ -87,7 +86,7 @@ const GetPostByCommunityIdAndUID = async (req,res)=>{
 }
 
 const DeletePost = async (req,res)=>{
-    const curUserId = await tokenController.getUIDfromToken
+    const curUserId = await tokenController.getUIDfromToken(req)
     const id = req.params.id
     const isValidId = await helper.isValidObjectID(id)
     if(!isValidId) return res.status(400).json({

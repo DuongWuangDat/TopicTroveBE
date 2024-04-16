@@ -4,7 +4,6 @@ const path = require("path")
 const express = require("express")
 const route = express.Router()
 const multer = require("multer")
-const Topic = require("../model/topic.js")
 initializeApp({
     apiKey: "AIzaSyCrSV6bWzOSsGaL-lM3BB7AsWOEEBdJpus",
     authDomain: "topictrove-a1b0c.firebaseapp.com",

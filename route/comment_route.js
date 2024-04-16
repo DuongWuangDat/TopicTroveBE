@@ -7,7 +7,7 @@ route.get("/findbypostid", commentController.GetCommentByPostID)
 route.get("/findbyuid", commentController.GetCommentByUID)
 route.post("/create", commentController.CreateComment)
 route.delete("/delete/:id", commentController.DeleteComment)
-route.patch("update/:id", commentController.UpdateComment)
+route.patch("/update/:id", commentController.UpdateComment)
 route.post("/checkisowner/:id",commentController.CheckIsOwner)
 
 module.exports = route

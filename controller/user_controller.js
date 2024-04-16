@@ -33,10 +33,11 @@ const register = async (req,res)=>{
     const accessToken = await auth.generateToken(newUser, "1h",'access')
     const refreshToken = await auth.generateToken(newUser, "30d", 'refresh')
     tokenController.addNewToken(refreshToken, newUser._id)
+    const dataUser = newUser.populate("communities")
     return res.json({
         accessToken: accessToken,
         refreshToken: refreshToken,
-        data: newUser.populate("communities")
+        data: newUser
     })
 
 }
@@ -202,15 +203,19 @@ const JoinCommunity = async(req,res)=>{
         message: "Invalid id"
     })
     const existedCommunity = await Community.findById(communityId)
+    
     if(!existedCommunity) return res.status(400).json({
         message: "Community not found"
     })
+    
     const user = await User.findById(userId)
     if(!user) return res.status(400).json({
         message: "User not found"
     })
     const communities = user.communities
     communities.push(communityId)
+    existedCommunity.memberCount +=1
+    await existedCommunity.save()
     await User.findByIdAndUpdate(userId, communities)
     return res.json({
         message: "Join community successfully"

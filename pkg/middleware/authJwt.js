@@ -10,7 +10,8 @@ const authJWT = ()=>{
     }).unless({
         path: [
             `${api}/user/register`,
-            `${api}/user/login`
+            `${api}/user/login`,
+            `${api}/token/deleteall`
         ]
     })
 }
