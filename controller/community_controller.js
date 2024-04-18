@@ -2,6 +2,7 @@ const Community = require("../model/community.js")
 const User = require("../model/user.js")
 const tokenController = require("../controller/token_controller.js")
 const helper = require("../pkg/helper/helper.js")
+const Post = require("../model/post.js")
 const GetAllCommunity = async (req,res)=>{
     const commnuityList = await Community.find().populate("owner", '-password').catch((e)=>{
         return res.status(400).json({
@@ -44,7 +45,9 @@ const DeleteCommunity = async (req,res)=>{
     if(ownerID != community.owner) return res.status(401).json({
         message: "Permission denied. Only owner can delete this community"
     })
-    
+    await Post.deleteMany({
+        communityId: id
+    })
     await Community.findByIdAndDelete(id).catch((e)=>{
         return res.status(400).json({
             message: "Something went wrong"

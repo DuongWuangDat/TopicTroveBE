@@ -57,6 +57,9 @@ const DeleteComment = async(req,res)=>{
             message: "Permission denied. Only moderator community, author of post, author of comment can delete this comment"
         })
     }
+    await Comment.deleteMany({
+        parentComment: id
+    })
     await Comment.findByIdAndDelete(id)
     return res.json({
         message: "Deleted successfully"

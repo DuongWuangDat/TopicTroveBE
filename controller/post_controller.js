@@ -2,13 +2,10 @@ const Post = require("../model/post.js")
 const User = require("../model/user.js")
 const Community = require("../model/community.js")
 const tokenController = require("../controller/token_controller.js")
+const Comment = require("../model/comment.js")
 const CreatePost = async (req,res)=>{
     const post = new Post(req.body)
-    await post.save().catch((e)=>{
-        return res.status(400).json({
-            message: "Something went wrong"
-        })
-    })
+    await post.save()
     return res.json({
         message: "Created post successfully",
         data: post
@@ -104,6 +101,9 @@ const DeletePost = async (req,res)=>{
             message: "Permission denied. Only author and owner's community can delete this post"
         })
     }
+    await Comment.deleteMany({
+        post: id
+    })
     await Post.findByIdAndDelete(id)
     return res.json({
         message: "Delete successfully"
