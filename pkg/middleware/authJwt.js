@@ -11,7 +11,8 @@ const authJWT = ()=>{
         path: [
             `${api}/user/register`,
             `${api}/user/login`,
-            `${api}/token/deleteall`
+            `${api}/token/deleteall`,
+            `${api}/upload/image`
         ]
     })
 }
