@@ -20,11 +20,15 @@ const CreateCommunity = async (req,res)=>{
         message: "User not found"
     })
     const community = new Community(req.body)
+    let isSuccess = true
+    console.log(community)
     await community.save().catch((e)=>{
+        isSuccess= false
         return res.status(400).json({
             message: "Something went wrong"
         })
     })
+    if(!isSuccess) return
     return res.json({
         message: "Created community successfully",
         data: community

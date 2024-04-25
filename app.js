@@ -13,7 +13,7 @@ const postRoute = require("./route/post_route.js")
 const commentRoute = require("./route/comment_route.js")
 const notificationRoute = require("./route/notification_route.js")
 const uploadRoute = require("./route/upload_route.js")
-
+const serviceRoute = require("./route/service_route.js")
 
 const port = process.env.PORT
 const url = process.env.ATLAS_URI
@@ -51,3 +51,4 @@ app.use(`${api}/community`, communityRoute)
 app.use(`${api}/post`, postRoute)
 app.use(`${api}/comment`, commentRoute)
 app.use(`${api}/notification`, notificationRoute)
+app.use(`${api}/service`, serviceRoute)

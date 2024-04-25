@@ -12,7 +12,8 @@ const authJWT = ()=>{
             `${api}/user/register`,
             `${api}/user/login`,
             `${api}/token/deleteall`,
-            `${api}/upload/image`
+            `${api}/upload/image`,
+            `${api}/service/sendEmail`
         ]
     })
 }

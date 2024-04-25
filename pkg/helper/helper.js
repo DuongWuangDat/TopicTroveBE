@@ -13,13 +13,13 @@ const isValidObjectID = async (id) =>{
     return await mongoose.isValidObjectId(id)
 }
 
-// const randomCode =()=>{
-//     const codeInit = "QWERTYUIOPASDFGHJKLZXCVBNM1234567890"
-//     let code = ""
-//     for(let i =0; i<6;i++){
-//         const index = Math.floor(Math.random()*codeInit.length)
-//         code += codeInit.charAt(index)
-//     }
-//     return code
-// }
-module.exports = {isValidEmail, isValidPhoneNumber, isValidObjectID}
+const randomCode =()=>{
+    const codeInit = "QWERTYUIOPASDFGHJKLZXCVBNM1234567890"
+    let code = ""
+    for(let i =0; i<6;i++){
+        const index = Math.floor(Math.random()*codeInit.length)
+        code += codeInit.charAt(index)
+    }
+    return code
+}
+module.exports = {isValidEmail, isValidPhoneNumber, isValidObjectID, randomCode}
