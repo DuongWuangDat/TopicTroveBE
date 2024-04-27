@@ -23,7 +23,8 @@ const userSchema = new Schema({
     communities: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Community"
-    }]
+    }],
+    post
     
 }, {timestamps: true})
 

@@ -150,6 +150,7 @@ const LikePost = async (req,res)=>{
     }
     post.interestUserList.push(userId)
     post.interestCount +=1
+    post.save()
     return res.json({
         message: "Successfull"
     })

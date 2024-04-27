@@ -101,7 +101,21 @@ const CheckIsOwner = async(req,res)=>{
     })
 }
 
-module.exports={CreateComment,GetAllComment,GetCommentByPostID,GetCommentByUID,DeleteComment,UpdateComment,CheckIsOwner}
+const GetCommentCountByPostId = async(req,res)=>{
+    const postId = req.query.postId
+    const isValidId = await helper.isValidObjectID(postId)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const count = await Comment.find({
+        post: postId
+    }).countDocuments()
+    return res.json({
+        numberComment: count
+    })
+}
+
+module.exports={CreateComment,GetAllComment,GetCommentByPostID,GetCommentByUID,DeleteComment,UpdateComment,CheckIsOwner, GetCommentCountByPostId}
 
 //methods
 const getCommentTree = async (postId) => {

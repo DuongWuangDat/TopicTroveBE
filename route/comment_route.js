@@ -9,5 +9,5 @@ route.post("/create", commentController.CreateComment)
 route.delete("/delete/:id", commentController.DeleteComment)
 route.patch("/update/:id", commentController.UpdateComment)
 route.post("/checkisowner/:id",commentController.CheckIsOwner)
-
+route.get("/commentcount", commentController.GetCommentCountByPostId)
 module.exports = route
