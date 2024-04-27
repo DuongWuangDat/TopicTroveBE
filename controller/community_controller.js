@@ -63,7 +63,7 @@ const DeleteCommunity = async (req,res)=>{
 }
 
 const GetCommunityByOwnerId = async (req,res)=>{
-    const ownerId = req.body.ownerId
+    const ownerId = req.query.ownerId
     const isValidId = await helper.isValidObjectID(ownerId)
     if(!isValidId) return res.status(400).json({
         message: "Invalid id"
@@ -77,7 +77,7 @@ const GetCommunityByOwnerId = async (req,res)=>{
 }
 
 const GetCommunityByName = async (req,res)=>{
-    const name = req.body.name
+    const name = req.query.name
     const communities = await Community.find({
         communityName: name
     }).populate("owner", '-password')

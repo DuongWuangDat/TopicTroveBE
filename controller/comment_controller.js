@@ -18,7 +18,7 @@ const CreateComment = async (req,res)=>{
 }
 
 const GetCommentByPostID = async (req,res)=>{
-    const postId = req.body.postId
+    const postId = req.query.postId
     const commentData = getCommentTree(postId)
     return res.json({
         data: commentData
@@ -26,7 +26,7 @@ const GetCommentByPostID = async (req,res)=>{
 }
 
 const GetCommentByUID = async (req,res)=>{
-    const userId = req.body.userId
+    const userId = req.query.userId
     const isValidId = await helper.isValidObjectID(userId)
     if(!isValidId) return res.status(400).json({
         message: "Invalid id"

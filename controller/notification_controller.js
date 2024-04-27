@@ -10,7 +10,7 @@ const GetAllNotification= async(req,res)=>{
 }
 
 const GetNotificationByUID = async (req,res)=>{
-    const userId = req.body.userID
+    const userId = req.query.userID
     const notificationList = await Notification.find({
         userId: userId
     })

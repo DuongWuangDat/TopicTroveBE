@@ -14,14 +14,14 @@ const CreatePost = async (req,res)=>{
 }
 
 const GetAllPost = async (req,res)=>{
-    const postList = await Post.find().populate('author', '-password').populate('communityId');
+    const postList = await Post.find().populate('author', '-password').populate('communityId').sort({createdAt: -1});
     return res.json({
         data: postList
     })
 }
 
 const GetPostByUID = async (req,res)=>{
-    const uid = req.body.authorId
+    const uid = req.query.authorId
     const isValidId = await helper.isValidObjectID(uid)
     if(!isValidId) return res.status(400).json({
         message: "Invalid id"
@@ -34,7 +34,7 @@ const GetPostByUID = async (req,res)=>{
     }
     const postList = await Post.find({
         author: uid
-    }).populate('author', '-password').populate('communityId')
+    }).populate('author', '-password').populate('communityId').sort({createdAt: -1})
     return res.json({
         data: postList
     })
@@ -52,7 +52,7 @@ const GetPostByCommunityId= async (req,res)=>{
     })
     const postList = await Post.find({
         communityId: communityId
-    }).populate('author', '-password').populate('communityId')
+    }).populate('author', '-password').populate('communityId').sort({createdAt: -1})
     return res.json({
         data: postList
     })
@@ -77,7 +77,7 @@ const GetPostByCommunityIdAndUID = async (req,res)=>{
     const postList = await Post.find({
         author: userId,
         communityId: communityId
-    }).populate('author', '-password').populate('communityId')
+    }).populate('author', '-password').populate('communityId').sort({createdAt: -1})
     return res.json({
         data: postList
     })
