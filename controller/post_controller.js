@@ -41,7 +41,7 @@ const GetPostByUID = async (req,res)=>{
 }
 
 const GetPostByCommunityId= async (req,res)=>{
-    const communityId = req.body.communityId
+    const communityId = req.query.communityId
     const isValidId = await helper.isValidObjectID(communityId)
     if(!isValidId) return res.status(400).json({
         message: "Invalid id"
