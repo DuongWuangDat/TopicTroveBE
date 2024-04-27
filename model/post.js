@@ -27,6 +27,10 @@ const postSchema = new Schema({
             default: 'text'
         }
     }],
+    interestUserList:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
     interestCount: {
         type: Number,
         default: 0

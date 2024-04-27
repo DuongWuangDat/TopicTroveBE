@@ -10,5 +10,6 @@ route.post("/create", postController.CreatePost)
 route.delete("/delete/:id", postController.DeletePost)
 route.patch("/update/:id", postController.UpdatePost)
 route.post("/checkisowner/:id", postController.CheckIsOwner)
-
+route.patch("/likepost/:id", postController.LikePost)
+route.delete("/deleteall", postController.DeleteAll)
 module.exports = route

@@ -129,6 +129,39 @@ const UpdatePost = async (req,res)=>{
     })
 }
 
+const LikePost = async (req,res)=>{
+    const userId = req.body.userId
+    const isValidUserId = await helper.isValidObjectID(userId)
+    const id = req.params.id
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId || !isValidUserId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const user = await User.findById(userId)
+    if(!user) return res.status(404).json({
+        message: "User not found"
+    })
+    const post = await Post.findById(id)
+    const isValid = post.interestUserList?.some((userID) => userID == userId)
+    if(!isValid){
+        return res.status(400).json({
+            message: "User had already liked this post"
+        })
+    }
+    post.interestUserList.push(userId)
+    post.interestCount +=1
+    return res.json({
+        message: "Successfull"
+    })
+}
+
+const DeleteAll = async (req,res)=>{
+    await Post.deleteMany({})
+    return res.json({
+        message: "Successfully"
+    })
+}
+
 const CheckIsOwner = async(req,res)=>{
     const curUserId = await tokenController.getUIDfromToken
     const id = req.params.id
@@ -151,4 +184,7 @@ const CheckIsOwner = async(req,res)=>{
         result: true
     })
 }
-module.exports = {CreatePost, GetAllPost,GetPostByCommunityId,GetPostByUID,GetPostByCommunityIdAndUID,DeletePost,UpdatePost,CheckIsOwner}
+
+
+
+module.exports = {CreatePost, GetAllPost,GetPostByCommunityId,GetPostByUID,GetPostByCommunityIdAndUID,DeletePost,UpdatePost,CheckIsOwner, LikePost, DeleteAll}
