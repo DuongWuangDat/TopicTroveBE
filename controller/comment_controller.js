@@ -3,7 +3,7 @@ const Community = require("../model/community.js")
 const Post = require("../model/post.js")
 const Comment = require("../model/comment.js")
 const tokenController = require("../controller/token_controller.js")
-
+const helper = require("../pkg/helper/helper.js")
 const CreateComment = async (req,res)=>{
     const comment = new Comment(req.body)
     await comment.save().catch((e)=>{
@@ -27,6 +27,10 @@ const GetCommentByPostID = async (req,res)=>{
 
 const GetCommentByUID = async (req,res)=>{
     const userId = req.body.userId
+    const isValidId = await helper.isValidObjectID(userId)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
     const comment = await Comment.find({
         author: userId
     }).populate('author', '-password')

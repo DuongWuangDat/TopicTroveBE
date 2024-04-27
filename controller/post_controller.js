@@ -3,6 +3,7 @@ const User = require("../model/user.js")
 const Community = require("../model/community.js")
 const tokenController = require("../controller/token_controller.js")
 const Comment = require("../model/comment.js")
+const helper = require("../pkg/helper/helper.js")
 const CreatePost = async (req,res)=>{
     const post = new Post(req.body)
     await post.save()
