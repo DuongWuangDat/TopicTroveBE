@@ -59,8 +59,8 @@ const GetPostByCommunityId= async (req,res)=>{
 }
 
 const GetPostByCommunityIdAndUID = async (req,res)=>{
-    const userId = req.body.authorId
-    const communityId = req.body.communityId
+    const userId = req.query.authorId
+    const communityId = req.query.communityId
     const isValidUId = await helper.isValidObjectID(userId)
     const isValidCommunityId = await helper.isValidObjectID(communityId)
     if(!isValidUId || !isValidCommunityId) return res.status(400).json({
