@@ -154,7 +154,7 @@ const LikePost = async (req,res)=>{
         post.interestCount +=1
     }
     else if (interest == -1){
-        post.interestUserList = post.interestUserList.filter((user)=> user !== userId)
+        post.interestUserList = post.interestUserList.filter((user)=> user != userId)
         post.interestCount -= 1
     }
     else{
