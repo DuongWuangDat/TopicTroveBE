@@ -130,6 +130,7 @@ const UpdatePost = async (req,res)=>{
 }
 
 const LikePost = async (req,res)=>{
+    const interest= req.body.interest
     const userId = req.body.userId
     const isValidUserId = await helper.isValidObjectID(userId)
     const id = req.params.id
@@ -143,13 +144,25 @@ const LikePost = async (req,res)=>{
     })
     const post = await Post.findById(id)
     const isValid = post.interestUserList?.some((userID) => userID == userId)
-    if(!isValid){
+    if(isValid){
         return res.status(400).json({
             message: "User had already liked this post"
         })
     }
-    post.interestUserList.push(userId)
-    post.interestCount +=1
+    if(interest==1){
+        post.interestUserList.push(userId)
+        post.interestCount +=1
+    }
+    else if (interest == -1){
+        post.interestUserList = post.interestUserList.filter((user)=> user == userId)
+        post.interestCount -= 1
+    }
+    else{
+        return res.status(400).json({
+            message: "Interest is not valid"
+        })
+    }
+    
     post.save()
     return res.json({
         message: "Successfull"
