@@ -4,6 +4,7 @@ const Community = require("../model/community.js")
 const tokenController = require("../controller/token_controller.js")
 const Comment = require("../model/comment.js")
 const helper = require("../pkg/helper/helper.js")
+const { cp } = require("fs")
 const CreatePost = async (req,res)=>{
     const post = new Post(req.body)
     await post.save()
@@ -15,8 +16,14 @@ const CreatePost = async (req,res)=>{
 
 const GetAllPost = async (req,res)=>{
     const postList = await Post.find().populate('author', '-password').populate('communityId').sort({createdAt: -1});
+    const posts = await Promise.all(postList.map(async (p) =>{
+        const commentCount = await Comment.find({
+            post: p._id
+        }).countDocuments()
+        return {...p.toObject(), commentCount}
+    }))
     return res.json({
-        data: postList
+        data: posts
     })
 }
 
@@ -35,8 +42,14 @@ const GetPostByUID = async (req,res)=>{
     const postList = await Post.find({
         author: uid
     }).populate('author', '-password').populate('communityId').sort({createdAt: -1})
+    const posts = await Promise.all(postList.map(async (p) =>{
+        const commentCount = await Comment.find({
+            post: p._id
+        }).countDocuments()
+        return {...p.toObject(), commentCount}
+    }))
     return res.json({
-        data: postList
+        data: posts
     })
 }
 
@@ -53,8 +66,14 @@ const GetPostByCommunityId= async (req,res)=>{
     const postList = await Post.find({
         communityId: communityId
     }).populate('author', '-password').populate('communityId').sort({createdAt: -1})
+    const posts = await Promise.all(postList.map(async (p) =>{
+        const commentCount = await Comment.find({
+            post: p._id
+        }).countDocuments()
+        return {...p.toObject(), commentCount}
+    }))
     return res.json({
-        data: postList
+        data: posts
     })
 }
 
@@ -78,8 +97,14 @@ const GetPostByCommunityIdAndUID = async (req,res)=>{
         author: userId,
         communityId: communityId
     }).populate('author', '-password').populate('communityId').sort({createdAt: -1})
+    const posts = await Promise.all(postList.map(async (p) =>{
+        const commentCount = await Comment.find({
+            post: p._id
+        }).countDocuments()
+        return {...p.toObject(), commentCount}
+    }))
     return res.json({
-        data: postList
+        data: posts
     })
 }
 
