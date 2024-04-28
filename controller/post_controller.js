@@ -144,7 +144,7 @@ const LikePost = async (req,res)=>{
     })
     const post = await Post.findById(id)
     const isValid = post.interestUserList?.some((userID) => userID == userId)
-    if(isValid){
+    if(isValid && interest == 1){
         return res.status(400).json({
             message: "User had already liked this post"
         })
