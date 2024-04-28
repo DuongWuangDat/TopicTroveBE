@@ -9,12 +9,6 @@ const sendEmail =async (req,res)=>{
         if(!isValidEmail) return res.status(400).json({
             message: "Invalid email"
         })
-        const existUser = await User.findOne({
-            email: email
-        })
-        if(!existUser) return res.status(404).json({
-            message: "User is not found"
-        })
         const code = Helper.randomCode()
         await Service.sendEmailService(email,code)
         res.json({
