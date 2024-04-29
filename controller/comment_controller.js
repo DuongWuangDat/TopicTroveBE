@@ -61,10 +61,7 @@ const DeleteComment = async(req,res)=>{
             message: "Permission denied. Only moderator community, author of post, author of comment can delete this comment"
         })
     }
-    await Comment.deleteMany({
-        parentComment: id
-    })
-    await Comment.findByIdAndDelete(id)
+    await deleteAllComment(id)
     return res.json({
         message: "Deleted successfully"
     })
@@ -181,4 +178,19 @@ const getCommentTree = async (postId) => {
     }
 
     return commentTree;
+}
+
+const deleteAllComment= async(id)=>{
+    let stack = [id];
+
+    while (stack.length) {
+        let currentId = stack.pop();
+        let childComments = await Comment.find({ parentComment: currentId });
+
+        for (let child of childComments) {
+            stack.push(child._id);
+        }
+
+        await Comment.deleteOne({ _id: currentId });
+    }
 }
