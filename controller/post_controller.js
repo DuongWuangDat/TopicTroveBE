@@ -154,6 +154,28 @@ const UpdatePost = async (req,res)=>{
     })
 }
 
+const GetPostById = async(req,res)=>{
+    const id = req.params.id
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const post = await Post.findById(id).populate('author', '-password').populate('communityId')
+    if(!post){
+        return res.status(404).json({
+            message: "Post not found"
+        })
+    }
+    const commentCount = await Comment.find({
+        post: post._id
+    }).countDocuments()
+    const data = {...post.toObject(),commentCount}
+    return res.json({
+        data: data
+    })
+}
+
+
 const LikePost = async (req,res)=>{
     const interest= req.body.interest
     const userId = req.body.userId
@@ -226,4 +248,4 @@ const CheckIsOwner = async(req,res)=>{
 
 
 
-module.exports = {CreatePost, GetAllPost,GetPostByCommunityId,GetPostByUID,GetPostByCommunityIdAndUID,DeletePost,UpdatePost,CheckIsOwner, LikePost, DeleteAll}
+module.exports = {CreatePost, GetAllPost,GetPostByCommunityId,GetPostByUID,GetPostByCommunityIdAndUID,DeletePost,UpdatePost,CheckIsOwner, LikePost, DeleteAll, GetPostById}
