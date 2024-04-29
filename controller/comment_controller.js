@@ -19,7 +19,7 @@ const CreateComment = async (req,res)=>{
 
 const GetCommentByPostID = async (req,res)=>{
     const postId = req.query.postId
-    const commentData = getCommentTree(postId)
+    const commentData = await getCommentTree(postId)
     return res.json({
         data: commentData
     })
