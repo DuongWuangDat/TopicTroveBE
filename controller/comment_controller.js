@@ -48,7 +48,7 @@ const GetAllComment = async(req,res)=>{
 
 const DeleteComment = async(req,res)=>{
     const curUserId = await tokenController.getUIDfromToken(req)
-    const id = await Comment.findById(id)
+    const id = req.params.id
     const isValidId = await helper.isValidObjectID(id)
     if(!isValidId) return res.status(400).json({
         message: "Invalid id"
