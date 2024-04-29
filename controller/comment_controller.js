@@ -115,7 +115,47 @@ const GetCommentCountByPostId = async(req,res)=>{
     })
 }
 
-module.exports={CreateComment,GetAllComment,GetCommentByPostID,GetCommentByUID,DeleteComment,UpdateComment,CheckIsOwner, GetCommentCountByPostId}
+const LikeComment= async(req,res)=>{
+    const interest= req.body.interest
+    const userId = req.body.userId
+    const isValidUserId = await helper.isValidObjectID(userId)
+    const id = req.params.id
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId || !isValidUserId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const user = await User.findById(userId)
+    if(!user) return res.status(404).json({
+        message: "User not found"
+    })
+    const comment = await Comment.findById(id)
+    const isValid = comment.interestUserList?.some((userID) => userID == userId)
+    if(isValid && interest == 1){
+        return res.status(400).json({
+            message: "User had already liked this comment"
+        })
+    }
+    if(interest==1){
+        comment.interestUserList.push(userId)
+        comment.interestCount +=1
+    }
+    else if (interest == -1){
+        comment.interestUserList = comment.interestUserList.filter((user)=> user != userId)
+        comment.interestCount -= 1
+    }
+    else{
+        return res.status(400).json({
+            message: "Interest is not valid"
+        })
+    }
+    
+    comment.save()
+    return res.json({
+        message: "Successfull"
+    })
+}
+
+module.exports={CreateComment,GetAllComment,GetCommentByPostID,GetCommentByUID,DeleteComment,UpdateComment,CheckIsOwner, GetCommentCountByPostId, LikeComment}
 
 //methods
 const getCommentTree = async (postId) => {

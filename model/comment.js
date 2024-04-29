@@ -15,6 +15,10 @@ const commentSchema = new Schema({
         type: String,
         required: true
     },
+    interestUserList:[{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+    }],
     interestCount: {
         type: Number,
         default: 0
