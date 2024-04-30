@@ -196,6 +196,11 @@ const LikePost = async (req,res)=>{
             message: "User had already liked this post"
         })
     }
+    if(!isValid && interest == -1){
+        return res.status(400).json({
+            message: "Something went wrong, reload UI maybe"
+        })
+    }
     if(interest==1){
         post.interestUserList.push(userId)
         post.interestCount +=1
