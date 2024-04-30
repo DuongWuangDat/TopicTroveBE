@@ -36,6 +36,12 @@ const revokedToken = async (token) =>{
     return tokenFind
 }
 
+const revokedAllTokenUser = async(userID)=>{
+    await Token.deleteMany({
+        user: userID
+    })
+}
+
 const getAccessToken = async (refreshToken) =>{
     const jwt = await auth.verifyToken(refreshToken)
     const id= jwt.userId
@@ -62,4 +68,4 @@ const deleteTokenByUserID = async (uid) =>{
 const deleteAllToken = async ()=>{
     return await Token.deleteMany({});
 }
-module.exports = {addNewToken, checkTokenIsRevoked,revokedToken, getAccessToken,deleteTokenByUserID, deleteAllToken, getUIDfromToken}
+module.exports = {addNewToken, checkTokenIsRevoked,revokedToken, getAccessToken,deleteTokenByUserID, deleteAllToken, getUIDfromToken, revokedAllTokenUser}

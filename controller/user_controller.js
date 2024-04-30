@@ -57,6 +57,7 @@ const login = async (req,res)=>{
     const user = await User.findOne({
         email: email
     }).select('-password').populate('communities')
+    tokenController.revokedAllTokenUser(user._id)
     const accessToken = await auth.generateToken(existUser,"1h", 'access')
     const refreshToken = await auth.generateToken(existUser, "30d", 'refresh')
     tokenController.addNewToken(refreshToken, user._id)
