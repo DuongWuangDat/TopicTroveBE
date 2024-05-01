@@ -132,6 +132,11 @@ const LikeComment= async(req,res)=>{
             message: "User had already liked this comment"
         })
     }
+    if(!isValid && interest == -1){
+        return res.status(400).json({
+            message: "Something went wrong"
+        })
+    }
     if(interest==1){
         comment.interestUserList.push(userId)
         comment.interestCount +=1
