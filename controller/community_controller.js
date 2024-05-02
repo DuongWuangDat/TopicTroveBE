@@ -105,7 +105,7 @@ const CheckIsJoin = async(req,res)=>{
     if(!user) return res.status(404).json({
         message: "User not found"
     })
-    const isJoin = user.communities.some((community)=> community === id)
+    const isJoin = user.communities.some((community)=> community == id)
     return res.json({
         result: isJoin
     }
