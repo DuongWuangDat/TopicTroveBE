@@ -86,6 +86,19 @@ const GetCommunityByName = async (req,res)=>{
     })
 }
 
+const GetCommunityByID = async (req,res)=>{
+    const id = req.params.id
+    const isValidId = await helper.isValidObjectID(id)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const community = await Community.findById(id).populate("owner", '-password')
+    return res.json({
+        data: community
+    })
+
+}
+
 const UpdateCommunity = async (req,res)=>{
     const ownerID = await tokenController.getUIDfromToken(req)
     const id= req.params.id
@@ -129,4 +142,4 @@ const CheckIsOwner = async (req,res)=>{
     })
 }
 
-module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner}
+module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner, GetCommunityByID}
