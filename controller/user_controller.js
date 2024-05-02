@@ -196,6 +196,7 @@ const getUserById = async(req,res)=>{
 }
 
 const JoinCommunity = async(req,res)=>{
+    const code = req.params.code
     const userId = req.body.userId
     const communityId = req.body.communityId
     const isValidUId = await helper.isValidObjectID(userId)
@@ -213,11 +214,32 @@ const JoinCommunity = async(req,res)=>{
     if(!user) return res.status(400).json({
         message: "User not found"
     })
-    const communities = user.communities
-    communities.push(communityId)
-    existedCommunity.memberCount +=1
+    const isValidCode = user.communities.some((community)=> community== communityId)
+    if(isValidCode && code==1){
+        return res.status(400).json({
+            message: "user has aldready joined this community"
+        })
+    }
+    if(!isValidCode && code == -1){
+        return res.status(400).json({
+            message: "Something went wrong"
+        })
+    }
+    if(code==1){
+        existedCommunity.memberCount +=1,
+        user.communities.push(communityId)
+    }
+    else if(code == -1){
+        existedCommunity.memberCount -=1,
+        user.communities = user.communities.filter((community)=> community!== communityId)
+    }
+    else{
+        return res.status(400).json({
+            message: "Invalid code"
+        })
+    }
     await existedCommunity.save()
-    await User.findByIdAndUpdate(userId, communities)
+    await user.save()
     return res.json({
         message: "Join community successfully"
     })
