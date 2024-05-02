@@ -33,7 +33,7 @@ const register = async (req,res)=>{
     const accessToken = await auth.generateToken(newUser, "1h",'access')
     const refreshToken = await auth.generateToken(newUser, "30d", 'refresh')
     tokenController.addNewToken(refreshToken, newUser._id)
-    const dataUser = newUser.populate("communities")
+    const dataUser = await newUser.populate("communities")
     return res.json({
         accessToken: accessToken,
         refreshToken: refreshToken,
@@ -61,11 +61,10 @@ const login = async (req,res)=>{
     const accessToken = await auth.generateToken(existUser,"1h", 'access')
     const refreshToken = await auth.generateToken(existUser, "30d", 'refresh')
     tokenController.addNewToken(refreshToken, user._id)
-    const dataUser = user.populate("communities")
     return res.json({
         access_token: accessToken,
         refresh_token: refreshToken,
-        data: dataUser
+        data: user
     })
 }
 
