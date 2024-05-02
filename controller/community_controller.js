@@ -86,6 +86,32 @@ const GetCommunityByName = async (req,res)=>{
     })
 }
 
+const CheckIsJoin = async(req,res)=>{
+    const uid = req.body.userId
+    let isValidId = await helper.isValidObjectID(uid)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const id = req.params.id
+    isValidId = await helper.isValidObjectID(id)
+    if(!isValidId) return res.status(400).json({
+        message: "Invalid id"
+    })
+    const community = await Community.findById(id)
+    if(!community) return res.status(404).json({
+        message: "Community not found"
+    })
+    const user = await User.findById(uid)
+    if(!user) return res.status(404).json({
+        message: "User not found"
+    })
+    const isJoin = user.communities.some((community)=> community._id === id)
+    return res.json({
+        result: isJoin
+    }
+    )
+}
+
 const GetCommunityByID = async (req,res)=>{
     const id = req.params.id
     const isValidId = await helper.isValidObjectID(id)
@@ -142,4 +168,4 @@ const CheckIsOwner = async (req,res)=>{
     })
 }
 
-module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner, GetCommunityByID}
+module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner, GetCommunityByID, CheckIsJoin}
