@@ -11,5 +11,5 @@ route.get("/find",userController.getAllUser)
 route.get("/find/email", userController.getUserByEmail)
 route.get("/findbyid/:id", userController.getUserById)
 route.post("/logout", userController.logOut)
-route.post("/joincommunity/:code", userController.JoinCommunity)
+route.post("/joincommunity", userController.JoinCommunity  )
 module.exports = route
