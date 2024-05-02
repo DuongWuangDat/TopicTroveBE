@@ -196,7 +196,7 @@ const getUserById = async(req,res)=>{
 }
 
 const JoinCommunity = async(req,res)=>{
-    const code = req.params.code
+    const code = req.body.code
     const userId = req.body.userId
     const communityId = req.body.communityId
     const isValidUId = await helper.isValidObjectID(userId)
