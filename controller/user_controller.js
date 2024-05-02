@@ -231,7 +231,7 @@ const JoinCommunity = async(req,res)=>{
     }
     else if(code == -1){
         existedCommunity.memberCount -=1,
-        user.communities = user.communities.filter((community)=> community!== communityId)
+        user.communities = user.communities.filter((community)=> community!= communityId)
     }
     else{
         return res.status(400).json({
