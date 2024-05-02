@@ -238,7 +238,10 @@ const JoinCommunity = async(req,res)=>{
             message: "Invalid code"
         })
     }
-    await existedCommunity.save()
+    await Community.updateOne(
+        { _id: existedCommunity._id }, 
+        { $set: { memberCount: existedCommunity.memberCount } }
+    );
     await user.save()
     return res.json({
         message: "Join community successfully"
