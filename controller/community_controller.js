@@ -168,4 +168,17 @@ const CheckIsOwner = async (req,res)=>{
     })
 }
 
-module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner, GetCommunityByID, CheckIsJoin}
+
+const GetJoinedCommunity = async(req,res)=>{
+    const ownerID = await tokenController.getUIDfromToken(req)
+    const user = await User.findById(ownerID).populate("communities")
+    if(!user) return res.status(404).json({
+        message: "Not found"
+    })
+    const dataCommunity = user.communities
+    return res.json({
+        data: dataCommunity
+    })
+}
+
+module.exports = {GetAllCommunity,GetCommunityByName,GetCommunityByOwnerId,CreateCommunity,DeleteCommunity,UpdateCommunity,CheckIsOwner, GetCommunityByID, CheckIsJoin,GetJoinedCommunity}
