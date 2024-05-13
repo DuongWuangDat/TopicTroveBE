@@ -172,10 +172,14 @@ const CheckIsOwner = async (req,res)=>{
 const GetJoinedCommunity = async(req,res)=>{
     const ownerID = await tokenController.getUIDfromToken(req)
     const user = await User.findById(ownerID).populate("communities")
+    
     if(!user) return res.status(404).json({
         message: "Not found"
     })
-    const dataCommunity = user.communities
+    const authorCommunity = await Community.find({owner: ownerID})
+    console.log(authorCommunity)
+    let dataCommunity = user.communities
+    dataCommunity = dataCommunity.concat(authorCommunity)
     return res.json({
         data: dataCommunity
     })
