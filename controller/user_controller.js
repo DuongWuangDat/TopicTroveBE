@@ -35,8 +35,8 @@ const register = async (req,res)=>{
     tokenController.addNewToken(refreshToken, newUser._id)
     const dataUser = await newUser.populate("communities")
     return res.json({
-        accessToken: accessToken,
-        refreshToken: refreshToken,
+        access_token: accessToken,
+        refresh_token: refreshToken,
         data: dataUser
     })
 
