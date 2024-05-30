@@ -127,6 +127,7 @@ const LikeComment= async(req,res)=>{
     })
     const comment = await Comment.findById(id)
     const isValid = comment.interestUserList?.some((userID) => userID == userId)
+    console.log(isValid)
     if(isValid && interest == 1){
         return res.status(400).json({
             message: "User had already liked this comment"
